@@ -1,4 +1,4 @@
-# 智慧康养管理平台
+<h1 align="center">智慧康养管理平台</h1>
 
 面向养老机构、护理团队和监管管理人员的数字化康养管理系统。项目采用前后端分离架构，后端为 Java 17 + Spring Boot 3.5 多模块工程，前端为 Vue 3 + TypeScript + Vite 工程，覆盖机构管理、老人档案、护理任务、护理日志、权限治理、文件存储、视频监测、系统监控、知识库和智能问答等场景。
 
@@ -137,7 +137,7 @@ nursing-house/
 ### 1. 克隆项目
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/zhanghongyu04/nursing-house.git
 cd nursing-house
 ```
 
