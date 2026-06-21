@@ -56,27 +56,9 @@
 
 ## 系统架构
 
-```text
-┌──────────────────────────────────────────────────────────────┐
-│                         nh-front                             │
-│      Vue 3 / TypeScript / Vite / Pinia / Element Plus         │
-└──────────────────────────────┬───────────────────────────────┘
-                               │ HTTP / SSE
-                               ▼
-┌──────────────────────────────────────────────────────────────┐
-│                        nh-gateway                            │
-│      Spring Boot application entrypoint / API aggregation     │
-├──────────────────────┬──────────────────────┬────────────────┤
-│      nh-system       │       nh-agent        │  nh-framework  │
-│  业务管理与平台能力   │  智能问答与 RAG 能力   │ 安全与基础设施抽象 │
-└──────────┬───────────┴──────────┬───────────┴────────┬───────┘
-           │                      │                    │
-           ▼                      ▼                    ▼
-┌──────────────────┐   ┌──────────────────┐   ┌──────────────────┐
-│ MySQL / Redis    │   │ DashScope/Qdrant │   │ RustFS / Ezviz    │
-│ 业务数据与缓存    │   │ 模型与向量检索     │   │ 文件与视频能力     │
-└──────────────────┘   └──────────────────┘   └──────────────────┘
-```
+<p align="center">
+  <img src="./docs/images/system-architecture.png" alt="智慧康养管理平台分层架构图" width="100%">
+</p>
 
 后端唯一启动入口是 `nh-gateway`，主类为 `com.zhiling.gateway.NhGatewayApplication`。`nh-system` 承载核心业务，`nh-agent` 承载智能问答，`nh-framework` 提供安全、Redis、MyBatis、监控、存储和 LLM Port 抽象，`nh-common` 放置公共模型、常量、异常和工具。
 

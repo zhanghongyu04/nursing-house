@@ -71,7 +71,9 @@ Thumbs.db
 Desktop.ini
 
 ### Documentation ###
-docs/
+docs/*
+!docs/images/
+!docs/images/**
 测试报告.md
 
 ### AI Tools (Claude / Mimicode / Agents) ###
