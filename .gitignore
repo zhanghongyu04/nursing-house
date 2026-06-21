@@ -1,0 +1,94 @@
+### HELP.md ###
+HELP.md
+
+### Maven ###
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+.m2/
+
+### Gradle ###
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IDE ###
+## IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+## STS (Spring Tool Suite)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+## NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+## VS Code
+.vscode/
+
+### Java ###
+*.class
+
+### Frontend (nh-front) ###
+node_modules/
+dist/
+.vite/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+### Credentials & Secrets ###
+credentials.json
+**/credentials.json
+deploy/.env
+
+### Logs & Temp ###
+logs/
+*.log
+*.bak
+*.tmp
+*.swp
+*~
+
+### OS Files ###
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+### Documentation ###
+docs/
+测试报告.md
+
+### AI Tools (Claude / Mimicode / Agents) ###
+.claude/
+.claude.json
+CLAUDE.md
+AGENTS.md
+.mimicode/
+.mimicode.json
+.mimicodeignore
+
+### Docker / Deployment ###
+*.Dockerfile
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+deploy/
+
+### Local Config ###
+.mvn-local-settings.xml

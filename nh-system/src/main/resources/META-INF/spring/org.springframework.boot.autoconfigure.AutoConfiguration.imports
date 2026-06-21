@@ -1,0 +1,4 @@
+com.zhiling.system.interfaces.exception.ExceptionAutoConfiguration
+com.zhiling.system.interfaces.security.SecurityAutoConfiguration
+com.zhiling.system.infrastructure.config.SystemMapperAutoConfiguration
+com.zhiling.system.infrastructure.config.SystemPortAutoConfiguration

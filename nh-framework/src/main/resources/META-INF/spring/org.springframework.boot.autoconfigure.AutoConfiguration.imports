@@ -1,0 +1,3 @@
+com.zhiling.framework.autoconfigure.NhPlatformAutoConfiguration
+com.zhiling.framework.autoconfigure.persistence.MybatisPlusAutoConfiguration
+com.zhiling.framework.autoconfigure.concurrent.ThreadPoolAutoConfiguration

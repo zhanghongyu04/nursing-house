@@ -1,0 +1,181 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  main:
+    allow-circular-references: true
+  banner:
+    location: classpath:banner.txt
+    charset: UTF-8
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: ${NURSING_HOUSE_MULTIPART_MAX_FILE_SIZE:10MB}
+      max-request-size: ${NURSING_HOUSE_MULTIPART_MAX_REQUEST_SIZE:50MB}
+      file-size-threshold: ${NURSING_HOUSE_MULTIPART_FILE_SIZE_THRESHOLD:2KB}
+
+  datasource:
+    driver-class-name: ${NURSING_HOUSE_DB_DRIVER:com.mysql.cj.jdbc.Driver}
+    url: ${NURSING_HOUSE_DB_URL}
+    username: ${NURSING_HOUSE_DB_USERNAME}
+    password: ${NURSING_HOUSE_DB_PASSWORD}
+    druid:
+      driver-class-name: ${NURSING_HOUSE_DB_DRIVER:com.mysql.cj.jdbc.Driver}
+      url: ${NURSING_HOUSE_DB_URL}
+      username: ${NURSING_HOUSE_DB_USERNAME}
+      password: ${NURSING_HOUSE_DB_PASSWORD}
+      initial-size: ${NURSING_HOUSE_DB_INITIAL_SIZE:5}
+      min-idle: ${NURSING_HOUSE_DB_MIN_IDLE:5}
+      max-active: ${NURSING_HOUSE_DB_MAX_ACTIVE:20}
+      max-wait: ${NURSING_HOUSE_DB_MAX_WAIT:60000}
+      time-between-eviction-runs-millis: ${NURSING_HOUSE_DB_EVICTION_RUN_INTERVAL:60000}
+      min-evictable-idle-time-millis: ${NURSING_HOUSE_DB_MIN_EVICTABLE_IDLE_TIME:300000}
+      validation-query: ${NURSING_HOUSE_DB_VALIDATION_QUERY:SELECT 1}
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: ${NURSING_HOUSE_DRUID_STAT_ENABLED:false}
+        url-pattern: /druid/*
+        login-username: ${NURSING_HOUSE_DRUID_USERNAME:admin}
+        login-password: ${NURSING_HOUSE_DRUID_PASSWORD:admin}
+
+  data:
+    redis:
+      host: ${NURSING_HOUSE_REDIS_HOST}
+      port: ${NURSING_HOUSE_REDIS_PORT:6379}
+      password: ${NURSING_HOUSE_REDIS_PASSWORD:}
+      database: ${NURSING_HOUSE_REDIS_DATABASE:0}
+      timeout: ${NURSING_HOUSE_REDIS_TIMEOUT:10s}
+      lettuce:
+        pool:
+          max-active: ${NURSING_HOUSE_REDIS_POOL_MAX_ACTIVE:8}
+          max-wait: ${NURSING_HOUSE_REDIS_POOL_MAX_WAIT:-1ms}
+          max-idle: ${NURSING_HOUSE_REDIS_POOL_MAX_IDLE:8}
+          min-idle: ${NURSING_HOUSE_REDIS_POOL_MIN_IDLE:0}
+
+  ai:
+    dashscope:
+      base-url: ${NURSING_HOUSE_DASHSCOPE_BASE_URL:https://dashscope.aliyuncs.com}
+      api-key: ${NURSING_HOUSE_DASHSCOPE_API_KEY}
+      chat:
+        options:
+          model: ${NURSING_HOUSE_DASHSCOPE_CHAT_MODEL:qwen3.5-plus}
+          multi-model: ${NURSING_HOUSE_DASHSCOPE_MULTI_MODEL:true}
+      embedding:
+        options:
+          model: ${NURSING_HOUSE_DASHSCOPE_EMBEDDING_MODEL:text-embedding-v3}
+          dimensions: ${NURSING_HOUSE_DASHSCOPE_EMBEDDING_DIMENSIONS:1024}
+    vectorstore:
+      qdrant:
+        host: ${NURSING_HOUSE_QDRANT_HOST}
+        port: ${NURSING_HOUSE_QDRANT_GRPC_PORT:6334}
+        collection-name: ${NURSING_HOUSE_QDRANT_COLLECTION:nursing-home-docs}
+        initialize-schema: ${NURSING_HOUSE_QDRANT_INITIALIZE_SCHEMA:false}
+        use-tls: ${NURSING_HOUSE_QDRANT_USE_TLS:false}
+        api-key: ${NURSING_HOUSE_QDRANT_API_KEY:}
+        batching-strategy: ${NURSING_HOUSE_QDRANT_BATCHING_STRATEGY:TOKEN_COUNT}
+
+nursing-house:
+  rustfs:
+    enabled: ${NURSING_HOUSE_RUSTFS_ENABLED:true}
+    endpoint: ${NURSING_HOUSE_RUSTFS_ENDPOINT}
+    access-key-id: ${NURSING_HOUSE_RUSTFS_ACCESS_KEY_ID}
+    secret-access-key: ${NURSING_HOUSE_RUSTFS_SECRET_ACCESS_KEY}
+    bucket-name: ${NURSING_HOUSE_RUSTFS_BUCKET_NAME:nursing-home}
+    region: ${NURSING_HOUSE_RUSTFS_REGION:us-east-1}
+    connection-timeout: ${NURSING_HOUSE_RUSTFS_CONNECTION_TIMEOUT:10000}
+    read-timeout: ${NURSING_HOUSE_RUSTFS_READ_TIMEOUT:60000}
+    write-timeout: ${NURSING_HOUSE_RUSTFS_WRITE_TIMEOUT:60000}
+    path-style-access-enabled: ${NURSING_HOUSE_RUSTFS_PATH_STYLE_ACCESS_ENABLED:true}
+
+  qdrant:
+    enabled: ${NURSING_HOUSE_QDRANT_ENABLED:true}
+    host: ${NURSING_HOUSE_QDRANT_HOST}
+    port: ${NURSING_HOUSE_QDRANT_GRPC_PORT:6334}
+    collection-name: ${NURSING_HOUSE_QDRANT_COLLECTION:nursing-home-docs}
+    vector-size: ${NURSING_HOUSE_QDRANT_VECTOR_SIZE:1024}
+    initialize-schema: ${NURSING_HOUSE_QDRANT_INITIALIZE_SCHEMA:false}
+    api-key: ${NURSING_HOUSE_QDRANT_API_KEY:}
+    use-https: ${NURSING_HOUSE_QDRANT_USE_HTTPS:false}
+    connection-timeout: ${NURSING_HOUSE_QDRANT_CONNECTION_TIMEOUT:10000}
+    read-timeout: ${NURSING_HOUSE_QDRANT_READ_TIMEOUT:30000}
+
+  ezviz:
+    app-key: ${NURSING_HOUSE_EZVIZ_APP_KEY:}
+    app-secret: ${NURSING_HOUSE_EZVIZ_APP_SECRET:}
+    base-url: ${NURSING_HOUSE_EZVIZ_BASE_URL:https://open.ys7.com}
+    token-refresh-before-expire-seconds: ${NURSING_HOUSE_EZVIZ_TOKEN_REFRESH_BEFORE_EXPIRE_SECONDS:300}
+    connect-timeout-ms: ${NURSING_HOUSE_EZVIZ_CONNECT_TIMEOUT_MS:5000}
+    read-timeout-ms: ${NURSING_HOUSE_EZVIZ_READ_TIMEOUT_MS:10000}
+
+  framework:
+    security:
+      ignore-url:
+        - /resource/menus/**
+        - /resource/myButten/**
+        - /customer/**
+        - /api/v1/login
+        - /api/v1/logout
+        - /api/v1/captcha**
+        - /api/v1/commonFile/**
+        - /api/v1/sanaImage/**
+        - /error
+        - /doc.html/**
+        - /*-swagger/**
+        - /swagger-resources/**
+        - /v3/api-docs/**
+        - /webjars/**
+        - /common/**
+        - /ws/**
+        - /swagger-ui/**
+      defaule-password: ${NURSING_HOUSE_DEFAULT_PASSWORD}
+
+  token:
+    header: ${NURSING_HOUSE_TOKEN_HEADER:Authorization}
+    secret: ${NURSING_HOUSE_TOKEN_SECRET}
+    expireTime: ${NURSING_HOUSE_TOKEN_EXPIRE_TIME:1800000}
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      id-type: AUTO
+  pagination:
+    enabled: true
+
+nh:
+  llm:
+    enabled: ${NURSING_HOUSE_LLM_ENABLED:true}
+    rag-enabled: ${NURSING_HOUSE_LLM_RAG_ENABLED:true}
+    tool-enabled: ${NURSING_HOUSE_LLM_TOOL_ENABLED:true}
+    memory-enabled: ${NURSING_HOUSE_LLM_MEMORY_ENABLED:true}
+    guard-enabled: ${NURSING_HOUSE_LLM_GUARD_ENABLED:true}
+    chat:
+      enabled: ${NURSING_HOUSE_LLM_CHAT_ENABLED:true}
+      expose-api: ${NURSING_HOUSE_LLM_CHAT_EXPOSE_API:true}
+      context-message-limit: ${NURSING_HOUSE_LLM_CONTEXT_MESSAGE_LIMIT:12}
+    memory:
+      enabled: ${NURSING_HOUSE_LLM_MEMORY_STORE_ENABLED:true}
+      provider: ${NURSING_HOUSE_LLM_MEMORY_PROVIDER:redis}
+      redis-key-prefix: ${NURSING_HOUSE_LLM_MEMORY_REDIS_KEY_PREFIX:llm:memory:}
+    guard:
+      enabled: ${NURSING_HOUSE_LLM_GUARD_STORE_ENABLED:true}
+  redis:
+    auth-database: ${NURSING_HOUSE_REDIS_AUTH_DATABASE:0}
+    agent-database: ${NURSING_HOUSE_REDIS_AGENT_DATABASE:1}
+
+logging:
+  level:
+    com:
+      lgh:
+        manage:
+          mapper: ${NURSING_HOUSE_LOG_LEVEL_MAPPER:info}
+          service: ${NURSING_HOUSE_LOG_LEVEL_SERVICE:info}
+          controller: ${NURSING_HOUSE_LOG_LEVEL_CONTROLLER:info}
+  file:
+    name: ${NURSING_HOUSE_LOG_FILE:logs/nursing-home.log}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n"

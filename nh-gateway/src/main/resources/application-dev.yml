@@ -1,0 +1,267 @@
+# 开发环境配置文件
+# 请根据本地环境修改以下配置
+
+server:
+  port: 8080
+
+spring:
+  main:
+    allow-circular-references: true
+  banner:
+    location: classpath:banner.txt
+    charset: UTF-8
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 50MB
+      file-size-threshold: 2KB
+  devtools:
+    restart:
+      enabled: true
+      additional-paths:
+        - ../nh-common/src/main/java
+        - ../nh-framework/src/main/java
+        - ../nh-system/src/main/java
+        - ../nh-agent/src/main/java
+      exclude: logs/**,target/**,static/**,public/**
+    livereload:
+      enabled: true
+
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/nursing-home?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${NURSING_HOUSE_DB_USERNAME:root}
+    password: ${NURSING_HOUSE_DB_PASSWORD}
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      # 数据库连接 URL
+      # 请修改: your_database_name 为你的数据库名
+      url: jdbc:mysql://localhost:3306/nursing-home?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      # 请修改: your_username 为你的数据库用户名
+      username: ${NURSING_HOUSE_DB_USERNAME:root}
+      # 请修改: your_password 为你的数据库密码
+      password: ${NURSING_HOUSE_DB_PASSWORD}
+
+      # 连接池配置
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+
+      # 监控统计配置
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        login-username: ${NURSING_HOUSE_DRUID_USERNAME:admin}
+        login-password: ${NURSING_HOUSE_DRUID_PASSWORD}
+
+  # Redis 配置
+  data:
+    redis:
+      # 请修改: 为你的 Redis 服务器地址
+      host: localhost
+      # 请修改: 为你的 Redis 端口（默认 6379）
+      port: 6379
+      # 请修改: 为你的 Redis 密码（如果没有密码可以留空）
+      password: ${NURSING_HOUSE_REDIS_PASSWORD:}
+      database: 0
+      timeout: 10s
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+
+  # SpringAI 配置（百炼云平台 - 通义千问）
+  ai:
+    dashscope:
+      # 百炼云平台官方 API 地址（原生模式）
+      base-url: https://dashscope.aliyuncs.com
+      # 请修改: 为你的百炼云平台 API Key
+      # 获取地址: https://dashscope.console.aliyun.com/apiKey
+      api-key: ${NURSING_HOUSE_DASHSCOPE_API_KEY}
+      chat:
+        options:
+          # qwen3.5-plus 为多模态模型，需启用 multiModel 使用 multimodal-generation 端点
+          model: qwen3.5-plus
+          multi-model: true
+      embedding:
+        options:
+          # 文本嵌入模型（用于向量搜索）
+          model: text-embedding-v3
+          dimensions: 1024
+    # Qdrant VectorStore 配置（Spring AI 官方支持）
+    # Qdrant 是一个高性能向量搜索引擎，用于存储和检索文档向量
+    # Docker 镜像建议固定为 qdrant/qdrant:v1.13.x，避免与 Spring AI 1.1.2 的 Qdrant Java Client 版本漂移
+    # 端口映射: 6333 (HTTP/Web UI) + 6334 (gRPC)
+    # Web UI: http://localhost:6333/dashboard
+    vectorstore:
+      qdrant:
+        host: localhost          # Qdrant 服务器地址
+        port: 6334              # gRPC 端口（注意：不是 6333 HTTP 端口）
+        collection-name: nursing-home-docs  # 向量集合名称
+        initialize-schema: true  # 自动创建集合（首次启动时）
+        use-tls: false          # 本地开发使用 HTTP（生产环境建议启用 HTTPS）
+        # API Key（如果 Qdrant 配置了认证则取消注释并填写）
+        # api-key: your_qdrant_api_key
+        batching-strategy: TOKEN_COUNT  # 文档批处理策略（可选：TOKEN_COUNT 或 FIXED_SIZE）
+
+# RustFS 对象存储配置（高性能 S3 兼容对象存储）
+# 官网: https://docs.rustfs.com
+# Docker 镜像: rustfs/rustfs:latest
+nursing-house:
+  rustfs:
+    # 是否启用 RustFS
+    enabled: true
+    # 服务端点（RustFS S3 API 地址）
+    # 默认端口: 9000 (S3 API), 9001 (Console)
+    endpoint: http://localhost:9000
+
+    # 访问凭证（从 doc/credentials .json 获取）
+    # 对应 RustFS 的 accessKey 和 secretKey
+    access-key-id: ${NURSING_HOUSE_RUSTFS_ACCESS_KEY_ID}
+    secret-access-key: ${NURSING_HOUSE_RUSTFS_SECRET_ACCESS_KEY}
+
+    # 存储桶名称（系统会自动创建）
+    # S3 协议要求 bucket 名称全局唯一
+    bucket-name: nursing-home
+
+    # AWS S3 区域（S3 协议要求，RustFS 兼容 S3 API）
+    # 可选值: us-east-1, us-west-1, eu-west-1 等
+    region: us-east-1
+
+    # 连接超时配置（可选，单位：毫秒）
+    connection-timeout: 10000    # 10秒
+    read-timeout: 60000          # 60秒
+    write-timeout: 60000         # 60秒
+
+    # 路径风格访问（RustFS 要求启用）
+    # 启用后 URL 格式: http://localhost:9000/bucket-name/key
+    path-style-access-enabled: true
+
+  # Qdrant 向量数据库配置
+  qdrant:
+    enabled: true
+    host: localhost
+    port: 6334
+    collection-name: nursing-home-docs
+    vector-size: 1024
+    initialize-schema: true
+    api-key: ""
+    use-https: false
+    connection-timeout: 10000
+    read-timeout: 30000
+
+  ezviz:
+    # 萤石开放平台应用凭据，建议通过环境变量注入
+    app-key: ${NURSING_HOUSE_EZVIZ_APP_KEY:}
+    app-secret: ${NURSING_HOUSE_EZVIZ_APP_SECRET:}
+    base-url: ${NURSING_HOUSE_EZVIZ_BASE_URL:https://open.ys7.com}
+    token-refresh-before-expire-seconds: ${NURSING_HOUSE_EZVIZ_TOKEN_REFRESH_BEFORE_EXPIRE_SECONDS:300}
+    connect-timeout-ms: ${NURSING_HOUSE_EZVIZ_CONNECT_TIMEOUT_MS:5000}
+    read-timeout-ms: ${NURSING_HOUSE_EZVIZ_READ_TIMEOUT_MS:10000}
+
+  # 安全配置
+  framework:
+    security:
+      # 忽略认证的 URL
+      ignore-url:
+        - /resource/menus/**
+        - /resource/myButten/**
+        - /customer/**
+        - /api/v1/login
+        - /api/v1/logout
+        - /api/v1/captcha**
+        - /api/v1/commonFile/**
+        - /api/v1/sanaImage/**
+        - /error
+        - /doc.html/**
+        - /*-swagger/**
+        - /swagger-resources/**
+        - /v3/api-docs/**
+        - /webjars/**
+        - /common/**
+        - /ws/**
+        - /swagger-ui/**
+      # 默认密码（用户初始化时使用）
+      defaule-password: ${NURSING_HOUSE_DEFAULT_PASSWORD}
+
+  # Token 配置
+  token:
+    # JWT 存储的 Header 名称
+    header: Authorization
+    # JWT 密钥（生产环境请修改为随机字符串）
+    secret: ${NURSING_HOUSE_TOKEN_SECRET}
+    # Token 有效期（毫秒）默认 5 小时
+    expireTime: 1800000
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  # 配置
+  configuration:
+    # 驼峰转下划线
+    map-underscore-to-camel-case: true
+    # 日志实现
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  # 全局配置
+  global-config:
+    # 数据库相关配置
+    db-config:
+      # 主键类型（AUTO 自增，INPUT 手动输入）
+      id-type: AUTO
+      # 逻辑删除字段名（可选，根据实际业务调整）
+      # logic-delete-field: status
+      # 逻辑删除值
+      # logic-delete-value: 1
+      # 逻辑未删除值
+      # logic-not-delete-value: 0
+  # 分页插件
+  pagination:
+    enabled: true
+
+# Redis 分库：认证 Token/验证码 与 Agent 会话记忆隔离
+nh:
+  llm:
+    enabled: true
+    rag-enabled: true
+    tool-enabled: true
+    memory-enabled: true
+    guard-enabled: true
+    chat:
+      enabled: true
+      expose-api: true
+      context-message-limit: 12
+    memory:
+      enabled: true
+      provider: redis
+      redis-key-prefix: "llm:memory:"
+    guard:
+      enabled: true
+  redis:
+    auth-database: 0
+    agent-database: 1
+
+# 日志记录
+logging:
+  level:
+    com:
+      lgh:
+        manage:
+          mapper: debug
+          service: info
+          controller: info
+  # 日志文件配置
+  file:
+    name: logs/nursing-home.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n"
+

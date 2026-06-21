@@ -1,0 +1,2 @@
+com.zhiling.agent.infrastructure.config.LlmCoreAutoConfiguration
+com.zhiling.agent.infrastructure.config.AgentAutoConfiguration

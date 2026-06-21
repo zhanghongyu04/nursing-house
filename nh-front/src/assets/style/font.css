@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'youshebiaotihei';
+    src: url("@/assets/fonts/YouSheBiaoTiHei-2.ttf ");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'poppins';
+    src: url("../fonts/poppins.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
