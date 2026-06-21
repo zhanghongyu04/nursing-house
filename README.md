@@ -123,7 +123,7 @@ nursing-house/
 ### 1. 克隆项目
 
 ```bash
-git clone https://github.com/zhanghongyu04/nursing-house.git
+git clone https://github.com/zhanghongyu04/smart-nursing-house.git
 cd nursing-house
 ```
 

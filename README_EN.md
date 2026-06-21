@@ -125,7 +125,7 @@ For basic business verification, MySQL, Redis, backend, and frontend are enough.
 ### 1. Clone
 
 ```bash
-git clone https://github.com/zhanghongyu04/nursing-house.git
+git clone https://github.com/zhanghongyu04/smart-nursing-house.git
 cd nursing-house
 ```
 
